@@ -1,10 +1,10 @@
-# esp32-devkit
+# ESP32-DEVKIT freewheeling
 
 
 # Introduction
 
-Get to know this ESP32 v4 evaluation kit ![](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/_images/esp32-devkitc-functional-overview.jpg)
-Connecting with a HUZZAH32 - ESP32 Feather ![](https://cdn-learn.adafruit.com/assets/assets/000/028/690/medium800/adafruit_products_pinbottom.jpg?1448334076)
+Get to know this ESP32 v4 evaluation kit (as Server): ![](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/_images/esp32-devkitc-functional-overview.jpg)
+Connecting with a HUZZAH32 - ESP32 Feather (as Client): ![](https://cdn-learn.adafruit.com/assets/assets/000/028/690/medium800/adafruit_products_pinbottom.jpg?1448334076)
 
 ____
 
@@ -17,14 +17,26 @@ Set up a GATT-server and Client with these devices.
   * Notify and indicate operations are enabled by the client but initiated by the server, providing a way to push data to the client.
   * Notifications are unacknowledged, while indications are acknowledged. Notifications are therefore faster but less reliable  
 
+![](https://i2.wp.com/randomnerdtutorials.com/wp-content/uploads/2021/11/BLE-Server-Client-Server-Advertising-03.png?w=750&quality=100&strip=all&ssl=1)
+
 * GATT client - a device which accesses data on the remote GATT server via read, write, notify, or indicate operations
 * GATT server - a device which stores data locally and provides data access methods to a remote GATT client
-
-## prerequisite
+* GATT stands for Generic Attributes and it defines a hierarchical data structure that is exposed to connected BLE devices. This means that GATT defines the way that two BLE devices send and receive standard messages.  
+Example -> ![](https://i0.wp.com/randomnerdtutorials.com/wp-content/uploads/2021/11/GATT-ESP32-BLE-Server-Client-Example.png?w=750&quality=100&strip=all&ssl=1)
+* Profile: standard collection of services for a specific use case;
+* Service: collection of related information, like sensor readings, battery level, heart rate, etc. ;
+* Characteristic: it is where the actual data is saved on the hierarchy (value);
+* Descriptor: metadata about the data;
+* Properties: describe how the characteristic value can be interacted with. For example: read, write, notify, broadcast, indicate, etc.  
+[Link Reference on randomTutorials](https://randomnerdtutorials.com/esp32-ble-server-client/)
+___
+## Prerequisite
 * [ESP tools](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/tools/index.html)
 
+___
 ## Useful links
-* [hardware ESP32 devkit v4](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/hw-reference/esp32/get-started-devkitc.html)
+* [hardware ESP32 devkit v4](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/hw-reference/esp32/get-started-devkitc.html)  
+  We are not adding any hardware for this test-project but I like to keep the overview at hand.
 ![](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/_images/esp32-devkitC-v4-pinout.png)
 * [GATT - Generic Attribute Profile](https://learn.adafruit.com/introduction-to-bluetooth-low-energy/gatt)
 * [BLE - fundamentals](https://www.embedded.com/bluetooth-low-energy-ble-fundamentals/)
@@ -118,3 +130,14 @@ I (5963) GATTC_DEMO: 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e
 I (5973) GATTC_DEMO: write descr success
 I (6043) GATTC_DEMO: write char success
 ```
+____
+
+# Task
+
+## Read/write characteristics of an 8 byte array
+
+## Boot button
+The BOOT button is connected to GPIO0 (which is also a bootstrapping pin to set the boot mode), so pressing it will pull GPIO0 low. You can use this as a general purpose button after your firmware is running.  
+This GPIO will have a notification trigger with a counter of the amount of boot buttons pressed.
+
+
