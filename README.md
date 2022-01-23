@@ -149,10 +149,10 @@ The client ESP32 FEATHER was replaced by a smartphone for easy debugging.
 
 ## 1) Read/write characteristics of an 8 byte array
 We can write and read-back values upto 8 byte. Only the READ and WRITE properties were set.
-The UUID  is 0x00FFm the charateristic id is 0x00FF.
+The UUID is 0x00FF the charateristic id is 0x00FF.
 The default array is {0x11,0x22,..,0x88}  
-**nRF Connect Screenshot**
-![](CharRW8Byte.jpg)
+**nRF Connect Screenshot**  
+![](CharRW8byte.jpg)
 LOG:
 ```txt
 I (15900) GATTS_DEMO: ESP_GATTS_CONNECT_EVT, conn_id 0, remote 54:2f:14:c8:6a:f2:
@@ -172,11 +172,11 @@ I (38040) GATTS_DEMO: GATT_READ_EVT, conn_id 0, trans_id 3, handle 42
 The BOOT button is connected to GPIO0 (which is also a bootstrapping pin to set the boot mode), so pressing it will pull GPIO0 low. You can use this as a general purpose button after your firmware is running.  
 This GPIO will have a notification trigger with a counter of the amount of boot buttons pressed.
 
-A task called `testNotify` is started when the notification is enabled. Now the Notification is sent every 1s, could be changed to on change.
+A task called `testNotify()` is started when the notification is enabled. Now the Notification is sent every 1s, could be changed to on-change. The default value is 0 and increases by 1 every enable button push.
 
-The UUID  is 0x00EE the charateristic id is 0xEE01. We can NOTIFY and READ this single byte variable.
+The UUID is 0x00EE the charateristic id is 0xEE01. We can NOTIFY and READ this single byte variable.
 
-Log:
+**nRF Connect Screenshot**  
 ![](NotifyLog.jpg)
 Console Log:
 ```txt
@@ -215,4 +215,7 @@ I (107061) GATTS_DEMO: notify disable
 
 ```
 
+As this code is only a proof of concept no effort has been put in coding guidelines nor structural readability.
+
+David.
 
