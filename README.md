@@ -23,12 +23,18 @@ Set up a GATT-server and Client with these devices.
 * GATT server - a device which stores data locally and provides data access methods to a remote GATT client
 * GATT stands for Generic Attributes and it defines a hierarchical data structure that is exposed to connected BLE devices. This means that GATT defines the way that two BLE devices send and receive standard messages.  
 Example -> ![](https://i0.wp.com/randomnerdtutorials.com/wp-content/uploads/2021/11/GATT-ESP32-BLE-Server-Client-Example.png?w=750&quality=100&strip=all&ssl=1)
-* Profile: standard collection of services for a specific use case;
-* Service: collection of related information, like sensor readings, battery level, heart rate, etc. ;
-* Characteristic: it is where the actual data is saved on the hierarchy (value);
-* Descriptor: metadata about the data;
-* Properties: describe how the characteristic value can be interacted with. For example: read, write, notify, broadcast, indicate, etc.  
+* <ins>Profile:</ins> standard collection of services for a specific use case
+* <ins>Service:</ins> collection of related information, like sensor readings, battery level, heart rate, etc. ; [predefined UUID list](https://btprodspecificationrefs.blob.core.windows.net/assigned-values/16-bit%20UUID%20Numbers%20Document.pdf)
+* <ins>Characteristic</ins>: it is where the actual data is saved on the hierarchy (value);
+  * <ins>Descriptor:</ins> metadata about the data;
+  * <ins>Properties:</ins> describe how the characteristic value can be interacted with. For example: read, write, notify, broadcast, indicate, etc.  
 [Link Reference on randomTutorials](https://randomnerdtutorials.com/esp32-ble-server-client/)
+
+## Attribute Protocol (ATT)
+The following figure shows a logical representation of an Attribute:
+![](https://www.novelbits.io/wp-content/uploads/2017/06/Attribute-structure.be528107546b4df284978c3ab889e0dd-768x123.png)
+* Handle: This is a 16-bit value that the server assigns to each of its attributes — think of it as an address.
+* Attribute Permissions determine whether an attribute can be read or written
 ___
 ## Prerequisite
 * [ESP tools](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/tools/index.html)
@@ -134,7 +140,28 @@ ____
 
 # Task
 
+The code actually starts with <ins>GAP</ins> [Generic Access Profile](https://learn.adafruit.com/introduction-to-bluetooth-low-energy/gap) , it is what makes your device visible to the outside world, and determines how two device interact. This is low-level compared to GATT.
+
+* [create Universally Unique Identifier/UUID online](https://www.guidgenerator.com/online-guid-generator.aspx)
+
 ## Read/write characteristics of an 8 byte array
+We can write and read-back values upto 8 byte. Only the READ and WRITE properties were set.
+**nRF Connect Screenshot**
+![](CharRW8Byte.jpg)
+LOG:
+```txt
+I (15900) GATTS_DEMO: ESP_GATTS_CONNECT_EVT, conn_id 0, remote 54:2f:14:c8:6a:f2:
+I (16380) GATTS_DEMO: update connection params status = 0, min_int = 16, max_int = 32,conn_int = 24,latency = 0, timeout = 400
+I (16680) GATTS_DEMO: update connection params status = 0, min_int = 0, max_int = 0,conn_int = 6,latency = 0, timeout = 500
+I (16940) GATTS_DEMO: update connection params status = 0, min_int = 0, max_int = 0,conn_int = 24,latency = 0, timeout = 400
+I (20220) GATTS_DEMO: GATT_READ_EVT, conn_id 0, trans_id 1, handle 42
+
+I (34170) GATTS_DEMO: GATT_WRITE_EVT, conn_id 0, trans_id 2, handle 42
+I (34180) GATTS_DEMO: GATT_WRITE_EVT, value len 4, value :
+I (34180) GATTS_DEMO: 01 02 03 04
+I (38040) GATTS_DEMO: GATT_READ_EVT, conn_id 0, trans_id 3, handle 42
+
+```
 
 ## Boot button
 The BOOT button is connected to GPIO0 (which is also a bootstrapping pin to set the boot mode), so pressing it will pull GPIO0 low. You can use this as a general purpose button after your firmware is running.  
