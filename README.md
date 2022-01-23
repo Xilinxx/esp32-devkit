@@ -144,8 +144,13 @@ The code actually starts with <ins>GAP</ins> [Generic Access Profile](https://le
 
 * [create Universally Unique Identifier/UUID online](https://www.guidgenerator.com/online-guid-generator.aspx)
 
-## Read/write characteristics of an 8 byte array
+Code changes were applied to the gatts_demo.c and test were performed from Android Smartphone.
+The client ESP32 FEATHER was replaced by a smartphone for easy debugging.
+
+## 1) Read/write characteristics of an 8 byte array
 We can write and read-back values upto 8 byte. Only the READ and WRITE properties were set.
+The UUID  is 0x00FFm the charateristic id is 0x00FF.
+The default array is {0x11,0x22,..,0x88}  
 **nRF Connect Screenshot**
 ![](CharRW8Byte.jpg)
 LOG:
@@ -163,8 +168,51 @@ I (38040) GATTS_DEMO: GATT_READ_EVT, conn_id 0, trans_id 3, handle 42
 
 ```
 
-## Boot button
+## 2) Boot button
 The BOOT button is connected to GPIO0 (which is also a bootstrapping pin to set the boot mode), so pressing it will pull GPIO0 low. You can use this as a general purpose button after your firmware is running.  
 This GPIO will have a notification trigger with a counter of the amount of boot buttons pressed.
+
+A task called `testNotify` is started when the notification is enabled. Now the Notification is sent every 1s, could be changed to on change.
+
+The UUID  is 0x00EE the charateristic id is 0xEE01. We can NOTIFY and READ this single byte variable.
+
+Log:
+![](NotifyLog.jpg)
+Console Log:
+```txt
+I (97301) GATTS_DEMO: GATT_WRITE_EVT, value len 2, value :
+I (97301) GATTS_DEMO: 01 00
+I (97301) GATTS_DEMO: Notify data send 3
+I (97311) GATTS_DEMO: ESP_GATTS_CONF_EVT status 0 attr_handle 46
+I (98311) GATTS_DEMO: Notify data send 3
+I (98311) GATTS_DEMO: ESP_GATTS_CONF_EVT status 0 attr_handle 46
+I (99311) GATTS_DEMO: Notify data send 3
+I (99311) GATTS_DEMO: ESP_GATTS_CONF_EVT status 0 attr_handle 46
+I (100311) GATTS_DEMO: Notify data send 3
+I (100311) GATTS_DEMO: ESP_GATTS_CONF_EVT status 0 attr_handle 46
+I (101311) GATTS_DEMO: Notify data send 3
+I (101311) GATTS_DEMO: ESP_GATTS_CONF_EVT status 0 attr_handle 46
+I (102311) GATTS_DEMO: Notify data send 3
+I (102311) GATTS_DEMO: ESP_GATTS_CONF_EVT status 0 attr_handle 46
+I (103121) GATTS_DEMO: GPIO[0] intr, val: 1, EnablePushedCnt: 4
+
+I (103311) GATTS_DEMO: Notify data send 4
+I (103311) GATTS_DEMO: ESP_GATTS_CONF_EVT status 0 attr_handle 46
+I (104311) GATTS_DEMO: Notify data send 4
+I (104311) GATTS_DEMO: ESP_GATTS_CONF_EVT status 0 attr_handle 46
+I (104551) GATTS_DEMO: GPIO[0] intr, val: 1, EnablePushedCnt: 5
+
+I (105311) GATTS_DEMO: Notify data send 5
+I (105311) GATTS_DEMO: ESP_GATTS_CONF_EVT status 0 attr_handle 46
+I (106311) GATTS_DEMO: Notify data send 5
+I (106311) GATTS_DEMO: ESP_GATTS_CONF_EVT status 0 attr_handle 46
+I (107041) GATTS_DEMO: GATT_WRITE_EVT, conn_id 0, trans_id 10, handle 47
+
+I (107051) GATTS_DEMO: GATT_WRITE_EVT, value len 2, value :
+I (107051) GATTS_DEMO: 00 00
+I (107051) GATTS_DEMO: task suspended
+I (107061) GATTS_DEMO: notify disable
+
+```
 
 
